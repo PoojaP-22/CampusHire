@@ -179,8 +179,6 @@ const studentProfileSchema = new mongoose.Schema(
 // ==========================================
 // INDEXES
 // ==========================================
-studentProfileSchema.index({ user: 1 });
-studentProfileSchema.index({ rollNumber: 1 });
 studentProfileSchema.index({ department: 1, batch: 1 });
 studentProfileSchema.index({ cgpa: -1 });
 studentProfileSchema.index({ isPlaced: 1 });

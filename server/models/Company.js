@@ -134,8 +134,6 @@ const companySchema = new mongoose.Schema(
 // ==========================================
 // INDEXES
 // ==========================================
-companySchema.index({ user: 1 });
-companySchema.index({ companyName: 1 });
 companySchema.index({ industry: 1 });
 
 // ==========================================

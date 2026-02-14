@@ -90,7 +90,6 @@ const userSchema = new mongoose.Schema(
 // ==========================================
 // INDEXES for Performance
 // ==========================================
-userSchema.index({ email: 1 });
 userSchema.index({ role: 1 });
 
 // ==========================================

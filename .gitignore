@@ -4,7 +4,6 @@
 node_modules/
 server/node_modules/
 client/node_modules/
-package-lock.json
 yarn.lock
 pnpm-lock.yaml
 
@@ -113,8 +112,6 @@ mongo-data/
 *.tgz
 .yarn-integrity
 
-# Ignore all markdown files
-*.md
-
-# But keep README
-!README.md
+# Environment example files should be committed
+!.env.example
+!server/.env.example
