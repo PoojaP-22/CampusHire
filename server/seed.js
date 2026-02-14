@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 import User from './models/User.js';
 import Company from './models/Company.js';
@@ -10,9 +9,6 @@ import Application from './models/Application.js';
 dotenv.config();
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/campus-hire';
-
-// ─── Helpers ───
-const hash = async (pw) => bcrypt.hash(pw, 10);
 
 const seed = async () => {
   try {
@@ -29,7 +25,7 @@ const seed = async () => {
     ]);
     console.log('Cleared existing data');
 
-    const pw = await hash('Password@123');
+    const pw = 'Password@123';  // Plain text - will be hashed by User model pre-save hook
 
     // ─── 1. ADMIN ───
     const admin = await User.create({
