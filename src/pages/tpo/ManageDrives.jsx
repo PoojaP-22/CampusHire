@@ -125,11 +125,16 @@ const ManageDrives = () => {
             <div>
               <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.375rem' }}>Company *</label>
               <select value={formData.company} onChange={e => setFormData(p => ({ ...p, company: e.target.value }))} required className="select-premium">
-                <option value="">Select a company</option>
+                <option value="">{companies.length === 0 ? 'No companies registered yet' : 'Select a company'}</option>
                 {companies.map(c => (
                   <option key={c._id} value={c._id}>{c.companyName || c.name}</option>
                 ))}
               </select>
+              {companies.length === 0 && (
+                <p style={{ fontSize: '0.75rem', color: 'var(--accent)', marginTop: '0.375rem' }}>
+                  A company must register an account first before you can create a drive for them.
+                </p>
+              )}
             </div>
             <div>
               <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.375rem' }}>Job Title *</label>
