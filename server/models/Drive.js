@@ -230,7 +230,30 @@ const driveSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-    toJSON: { virtuals: true },
+    toJSON: {
+      virtuals: true,
+      transform: function(doc, ret) {
+        // Add frontend-friendly aliases so UI can use either field name
+        ret.title = ret.jobTitle;
+        ret.description = ret.jobDescription;
+        ret.type = ret.jobType;
+        ret.location = ret.jobLocation;
+        ret.deadline = ret.applicationDeadline;
+        ret.positions = ret.numberOfPositions;
+        ret.applicationCount = ret.totalApplications;
+        if (ret.salary) {
+          ret.salary.ctc = ret.salary.min;
+        }
+        if (ret.eligibility) {
+          ret.eligibilityCriteria = {
+            minCGPA: ret.eligibility.minCGPA,
+            allowedDepartments: ret.eligibility.allowedDepartments,
+            maxBacklogs: ret.eligibility.maxBacklogs
+          };
+        }
+        return ret;
+      }
+    },
     toObject: { virtuals: true }
   }
 );

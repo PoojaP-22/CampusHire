@@ -18,6 +18,7 @@ export const deleteDrive = (id) => api.delete(`/drives/${id}`);
 export const togglePublish = (id) => api.patch(`/drives/${id}/publish`);
 export const closeDrive = (id) => api.patch(`/drives/${id}/close`);
 export const getMyDrives = () => api.get('/drives/me/my-drives');
+export const getCompanies = () => api.get('/drives/companies/list');
 export const getEligibleStudents = (id) => api.get(`/drives/${id}/eligible-students`);
 
 // Application APIs

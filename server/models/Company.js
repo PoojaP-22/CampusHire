@@ -126,7 +126,14 @@ const companySchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-    toJSON: { virtuals: true },
+    toJSON: {
+      virtuals: true,
+      transform: function(doc, ret) {
+        // Add 'name' alias for companyName so frontend can use drive.company?.name
+        ret.name = ret.companyName;
+        return ret;
+      }
+    },
     toObject: { virtuals: true }
   }
 );

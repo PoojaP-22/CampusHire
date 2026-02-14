@@ -25,7 +25,7 @@ const TPODashboard = () => {
     const load = async () => {
       try {
         const [drivesRes, studentsRes] = await Promise.allSettled([
-          api.getDrives(),
+          api.getDrives({ status: 'all', limit: 100 }),
           api.getStudents()
         ]);
         const drives = drivesRes.status === 'fulfilled' ? drivesRes.value.data?.data || [] : [];

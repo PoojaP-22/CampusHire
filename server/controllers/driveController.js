@@ -10,6 +10,41 @@ import StudentProfile from '../models/StudentProfile.js';
  * @access  Private (TPO/Company)
  */
 export const createDrive = asyncHandler(async (req, res, next) => {
+  // Map frontend field names to model field names
+  const body = { ...req.body };
+  if (body.title && !body.jobTitle) body.jobTitle = body.title;
+  if (body.description && !body.jobDescription) body.jobDescription = body.description;
+  if (body.location && !body.jobLocation) body.jobLocation = body.location;
+  if (body.deadline && !body.applicationDeadline) body.applicationDeadline = body.deadline;
+  if (body.positions && !body.numberOfPositions) body.numberOfPositions = body.positions;
+
+  // Map job type values
+  if (body.type && !body.jobType) {
+    const typeMap = { 'Full-Time': 'Full-time', 'Internship': 'Internship', 'Intern + FTE': 'Full-time', 'Part-Time': 'Part-time' };
+    body.jobType = typeMap[body.type] || body.type;
+  }
+
+  // Map salary fields
+  if (body.salary?.ctc && !body.salary?.min) {
+    body.salary = { ...body.salary, min: body.salary.ctc };
+  }
+
+  // Map eligibility fields
+  if (body.eligibilityCriteria && !body.eligibility) {
+    body.eligibility = {
+      minCGPA: body.eligibilityCriteria.minCGPA || 0,
+      allowedDepartments: (body.eligibilityCriteria.allowedDepartments || []).length > 0
+        ? body.eligibilityCriteria.allowedDepartments.map(d => {
+            const deptMap = { 'CSE': 'Computer Science', 'IT': 'Information Technology', 'ECE': 'Electronics', 'EEE': 'Electrical', 'MECH': 'Mechanical', 'CIVIL': 'Civil', 'AIDS': 'Other', 'AIML': 'Other' };
+            return deptMap[d] || d;
+          })
+        : ['All'],
+      maxBacklogs: body.eligibilityCriteria.maxBacklogs || 0,
+      allowBacklogs: (body.eligibilityCriteria.maxBacklogs || 0) > 0
+    };
+    delete body.eligibilityCriteria;
+  }
+
   // Get company based on user role
   let company;
   if (req.user.role === 'company') {
@@ -17,17 +52,17 @@ export const createDrive = asyncHandler(async (req, res, next) => {
     if (!company) {
       return next(new ErrorResponse('Company profile not found', 404));
     }
-    req.body.company = company._id;
+    body.company = company._id;
   } else if (req.user.role === 'tpo') {
     // TPO can create drive for any company
-    if (!req.body.company) {
+    if (!body.company) {
       return next(new ErrorResponse('Please specify company', 400));
     }
   }
 
-  req.body.createdBy = req.user.id;
+  body.createdBy = req.user.id;
 
-  const drive = await Drive.create(req.body);
+  const drive = await Drive.create(body);
 
   // Update company stats
   if (company) {
@@ -58,7 +93,10 @@ export const getDrives = asyncHandler(async (req, res, next) => {
   removeFields.forEach(param => delete reqQuery[param]);
 
   // Add filters for active drives by default
-  if (!reqQuery.status) {
+  // If status=all, show all drives (for TPO dashboard)
+  if (reqQuery.status === 'all') {
+    delete reqQuery.status;
+  } else if (!reqQuery.status) {
     reqQuery.status = 'Active';
     reqQuery.isPublished = true;
   }

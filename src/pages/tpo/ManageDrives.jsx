@@ -18,11 +18,12 @@ const defaultDrive = {
   title: '', description: '', type: 'Full-Time', location: '',
   salary: { ctc: '', stipend: '' },
   eligibilityCriteria: { minCGPA: '', allowedDepartments: [], maxBacklogs: 0 },
-  deadline: '', positions: 1
+  deadline: '', positions: 1, company: ''
 };
 
 const ManageDrives = () => {
   const [drives, setDrives] = useState([]);
+  const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showCreate, setShowCreate] = useState(false);
   const [formData, setFormData] = useState({ ...defaultDrive });
@@ -30,13 +31,20 @@ const ManageDrives = () => {
 
   const loadDrives = async () => {
     try {
-      const res = await api.getDrives();
+      const res = await api.getDrives({ status: 'all', limit: 100 });
       setDrives(res.data?.data || []);
     } catch (err) { console.error(err); }
     setLoading(false);
   };
 
-  useEffect(() => { loadDrives(); }, []);
+  const loadCompanies = async () => {
+    try {
+      const res = await api.getCompanies();
+      setCompanies(res.data?.data || []);
+    } catch (err) { console.error(err); }
+  };
+
+  useEffect(() => { loadDrives(); loadCompanies(); }, []);
 
   const handleCreate = async (e) => {
     e.preventDefault();
@@ -98,7 +106,7 @@ const ManageDrives = () => {
                 </div>
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
                   <button onClick={() => handleTogglePublish(drive._id)} className="btn-secondary" style={{ fontSize: '0.75rem', padding: '0.5rem 0.75rem' }}>
-                    {drive.status === 'Published' ? 'Unpublish' : 'Publish'}
+                    {drive.isPublished ? 'Unpublish' : 'Publish'}
                   </button>
                   <button onClick={() => handleDelete(drive._id)} className="btn-danger" style={{ fontSize: '0.75rem', padding: '0.5rem 0.75rem' }}>
                     Delete
@@ -114,6 +122,15 @@ const ManageDrives = () => {
       <Modal isOpen={showCreate} onClose={() => setShowCreate(false)} title="Create New Drive" width="650px">
         <form onSubmit={handleCreate}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div>
+              <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.375rem' }}>Company *</label>
+              <select value={formData.company} onChange={e => setFormData(p => ({ ...p, company: e.target.value }))} required className="select-premium">
+                <option value="">Select a company</option>
+                {companies.map(c => (
+                  <option key={c._id} value={c._id}>{c.companyName || c.name}</option>
+                ))}
+              </select>
+            </div>
             <div>
               <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.375rem' }}>Job Title *</label>
               <input value={formData.title} onChange={e => setFormData(p => ({ ...p, title: e.target.value }))} required className="input-premium" placeholder="e.g. Software Developer" />

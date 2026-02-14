@@ -23,7 +23,7 @@ const BrowseDrives = () => {
   useEffect(() => {
     const load = async () => {
       try {
-        const res = await api.getDrives({ status: 'Published' });
+        const res = await api.getDrives({ status: 'Active' });
         setDrives(res.data?.data || []);
       } catch (err) { console.error(err); }
       setLoading(false);

@@ -83,7 +83,7 @@ const MyDrives = () => {
               </div>
               <div style={{ display: 'flex', gap: '0.5rem' }}>
                 <button onClick={async () => { try { await api.togglePublish(drive._id); loadDrives(); } catch(e){} }} className="btn-secondary" style={{ flex: 1, fontSize: '0.8rem' }}>
-                  {drive.status === 'Published' ? 'Unpublish' : 'Publish'}
+                  {drive.isPublished ? 'Unpublish' : 'Publish'}
                 </button>
                 <button onClick={async () => { if (confirm('Delete?')) { try { await api.deleteDrive(drive._id); loadDrives(); } catch(e){} } }} className="btn-danger" style={{ fontSize: '0.8rem' }}>
                   Delete
