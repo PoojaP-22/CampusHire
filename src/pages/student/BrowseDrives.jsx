@@ -34,7 +34,7 @@ const BrowseDrives = () => {
   const handleApply = async (driveId) => {
     setApplying(true);
     try {
-      await api.applyToDrive({ driveId });
+      await api.applyToDrive({ drive: driveId });
       alert('Applied successfully!');
       setSelected(null);
     } catch (err) {
