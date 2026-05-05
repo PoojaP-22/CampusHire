@@ -403,6 +403,21 @@ By analyzing this codebase, you can learn:
 
 ---
 
+## 4. COURSE ARTICULATION MATRIX
+
+This matrix is tailored to the Campus Hire project, with emphasis on backend architecture, authentication, database design, secure API development, and deployment readiness.
+
+| CO | PO1 | PO2 | PO3 | PO4 | PO5 | PO6 | PO7 | PO8 | PO9 | PO10 | PO11 | PSO1 | PSO2 | PSO3 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| U23CS494.1 | 3 | 3 | 3 | 2 | 2 | - | - | 1 | 1 | 2 | 2 | 3 | 3 | 2 |
+| U23CS494.2 | 3 | 3 | 3 | 2 | 3 | - | - | 1 | 2 | 2 | 2 | 3 | 3 | 2 |
+| U23CS494.3 | 3 | 3 | 3 | 2 | 3 | - | - | 1 | 2 | 2 | 3 | 3 | 3 | 2 |
+| U23CS494.4 | 3 | 3 | 3 | 3 | 3 | - | - | 1 | 2 | 2 | 3 | 3 | 3 | 3 |
+| U23CS494.5 | 3 | 3 | 2 | 3 | 3 | - | - | 1 | 2 | 2 | 2 | 3 | 3 | 3 |
+| Average | 3 | 3 | 3 | 2 | 3 | - | - | 1 | 2 | 2 | 2 | 3 | 3 | 2 |
+
+---
+
 ## 📞 READY FOR NEXT PHASE
 
 You now have a **solid foundation**. The backend is:

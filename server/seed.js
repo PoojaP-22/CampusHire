@@ -8,11 +8,23 @@ import Application from './models/Application.js';
 
 dotenv.config();
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/campus-hire';
+const LOCAL_MONGODB_URI = process.env.MONGODB_LOCAL_URI || 'mongodb://127.0.0.1:27017/campus-hire';
+
+const connectWithFallback = async () => {
+  try {
+    return await mongoose.connect(process.env.MONGODB_URI || LOCAL_MONGODB_URI);
+  } catch (error) {
+    if (process.env.MONGODB_URI && process.env.MONGODB_URI !== LOCAL_MONGODB_URI) {
+      return mongoose.connect(LOCAL_MONGODB_URI);
+    }
+
+    throw error;
+  }
+};
 
 const seed = async () => {
   try {
-    await mongoose.connect(MONGODB_URI);
+    await connectWithFallback();
     console.log('Connected to MongoDB');
 
     // Clear existing data

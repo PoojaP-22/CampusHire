@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import crypto from 'node:crypto';
 
 /**
  * User Schema
@@ -120,11 +121,12 @@ userSchema.virtual('companyProfile', {
 userSchema.pre('save', async function (next) {
   // Only hash password if it's modified
   if (!this.isModified('password')) {
-    next();
+    return next();
   }
   
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+  next();
 });
 
 // ==========================================

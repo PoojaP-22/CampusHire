@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "start": "node scripts/start-dev.mjs",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",

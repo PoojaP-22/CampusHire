@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import asyncHandler from './asyncHandler.js';
 import ErrorResponse from '../utils/errorResponse.js';
 import User from '../models/User.js';
+import mongoose from 'mongoose';
 
 /**
  * Protect Routes - Verify JWT Token
